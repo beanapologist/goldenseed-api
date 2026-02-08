@@ -140,8 +140,24 @@ class BatchResponse(BaseModel):
 
 # --- Endpoints ---
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
+    """Serve the landing page"""
+    landing_path = Path(__file__).parent.parent / "public" / "index.html"
+    if landing_path.exists():
+        return landing_path.read_text()
+    return """
+    <html>
+        <body>
+            <h1>🌱 GoldenSeed API</h1>
+            <p>Deterministic Procedural Generation</p>
+            <a href="/docs">View API Documentation</a>
+        </body>
+    </html>
+    """
+
+@app.get("/health")
+async def health_check():
     """API health check"""
     return {
         "service": "GoldenSeed API",
@@ -314,7 +330,7 @@ async def batch_generate(
     return BatchResponse(results=results)
 
 @app.get("/api/v1/health")
-async def health_check():
+async def api_health():
     """Detailed health check for monitoring"""
     return {
         "status": "healthy",
@@ -323,22 +339,6 @@ async def health_check():
         "mode": "production" if DATABASE_AVAILABLE else "demo",
         "version": "1.0.0"
     }
-
-@app.get("/", response_class=HTMLResponse)
-async def landing_page():
-    """Serve the landing page"""
-    landing_path = Path(__file__).parent.parent / "public" / "index.html"
-    if landing_path.exists():
-        return landing_path.read_text()
-    return """
-    <html>
-        <body>
-            <h1>🌱 GoldenSeed API</h1>
-            <p>Deterministic Procedural Generation</p>
-            <a href="/docs">View API Documentation</a>
-        </body>
-    </html>
-    """
 
 if __name__ == "__main__":
     import uvicorn
