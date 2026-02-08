@@ -13,14 +13,25 @@ import time
 
 # Import GoldenSeed
 try:
-    from gq import UniversalQKD
+    from .gq import UniversalQKD
 except ImportError:
-    # Fallback for development
-    print("Warning: golden-seed not installed. Install with: pip install golden-seed")
-    UniversalQKD = None
+    try:
+        from gq import UniversalQKD
+    except ImportError:
+        print("Warning: golden-seed not installed. Install with: pip install golden-seed")
+        UniversalQKD = None
 
-# Import database functions
-from database import verify_api_key as db_verify_api_key, log_usage, get_monthly_usage, check_rate_limit
+# Import database functions (optional for now)
+try:
+    from .database import verify_api_key as db_verify_api_key, log_usage, get_monthly_usage, check_rate_limit
+    DATABASE_AVAILABLE = True
+except ImportError:
+    print("Warning: Database module not available. Running in demo mode.")
+    DATABASE_AVAILABLE = False
+    db_verify_api_key = None
+    log_usage = None
+    get_monthly_usage = None
+    check_rate_limit = None
 
 app = FastAPI(
     title="GoldenSeed API",
@@ -42,7 +53,7 @@ app.add_middleware(
 # --- Auth (Database-backed) ---
 
 async def verify_api_key(authorization: str = Header(None)):
-    """Verify API key against database"""
+    """Verify API key against database (or demo mode)"""
     if not authorization:
         raise HTTPException(status_code=401, detail="Missing API key. Get one at https://goldenseed.io")
     
@@ -50,6 +61,20 @@ async def verify_api_key(authorization: str = Header(None)):
         raise HTTPException(status_code=401, detail="Invalid auth format. Use: Bearer gs_your_key")
     
     api_key = authorization.replace("Bearer ", "")
+    
+    # Demo mode fallback (if database not available)
+    if not DATABASE_AVAILABLE:
+        if api_key == "gs_demo_key_12345":
+            return {
+                "user_id": "demo-user",
+                "api_key_id": "demo-key",
+                "email": "demo@goldenseed.io",
+                "tier": "free",
+                "chunks_limit": 10000,
+                "rate_limit": 100
+            }
+        else:
+            raise HTTPException(status_code=403, detail="Invalid API key. Use gs_demo_key_12345 for testing.")
     
     # Verify against database
     user = await db_verify_api_key(api_key)
@@ -171,16 +196,17 @@ async def generate(
         # Construct verification URL
         verification_url = f"https://goldenseed.io/verify/{hash_value[:16]}"
         
-        # Log usage
-        response_time_ms = int((time.time() - start_time) * 1000)
-        await log_usage(
-            user_id=auth["user_id"],
-            api_key_id=auth["api_key_id"],
-            endpoint="/api/v1/generate",
-            chunks_generated=request.chunks,
-            response_time_ms=response_time_ms,
-            status_code=200
-        )
+        # Log usage (if database available)
+        if DATABASE_AVAILABLE and log_usage:
+            response_time_ms = int((time.time() - start_time) * 1000)
+            await log_usage(
+                user_id=auth["user_id"],
+                api_key_id=auth["api_key_id"],
+                endpoint="/api/v1/generate",
+                chunks_generated=request.chunks,
+                response_time_ms=response_time_ms,
+                status_code=200
+            )
         
         return GenerateResponse(
             data=data,
@@ -291,6 +317,8 @@ async def health_check():
     return {
         "status": "healthy",
         "goldenseed_available": UniversalQKD is not None,
+        "database_available": DATABASE_AVAILABLE,
+        "mode": "production" if DATABASE_AVAILABLE else "demo",
         "version": "1.0.0"
     }
 
