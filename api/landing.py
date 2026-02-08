@@ -140,6 +140,20 @@ LANDING_HTML = r"""<!DOCTYPE html>
             margin-bottom: 20px;
         }
         
+        @media (max-width: 480px) {
+            .demo-controls {
+                flex-direction: column;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
         .demo-input {
             flex: 1;
             padding: 15px;
@@ -200,6 +214,39 @@ LANDING_HTML = r"""<!DOCTYPE html>
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin: 30px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .side-by-side {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            canvas {
+                max-width: 100%;
+                height: auto;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-demo, .demo-container {
+                padding: 30px 20px;
+            }
+            
+            .dungeon-grid {
+                transform: scale(0.8);
+            }
+            
+            .dungeon-legend {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
         }
         
         .side-panel {
