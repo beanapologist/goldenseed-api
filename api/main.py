@@ -3,7 +3,7 @@ GoldenSeed API - Deterministic Procedural Generation as a Service
 MVP FastAPI implementation
 """
 
-from fastapi import FastAPI, HTTPException, Header, Depends, Request
+from fastapi import FastAPI, HTTPException, Header, Depends, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, List, Literal
@@ -241,8 +241,8 @@ async def verify(hash_prefix: str):
 
 @app.get("/api/v1/stats/coinflip", response_model=CoinFlipStatsResponse)
 async def coinflip_stats(
-    seed: int = 0,
-    flips: int = Field(default=100000, ge=1, le=1000000)
+    seed: int = Query(default=0, ge=0),
+    flips: int = Query(default=100000, ge=1, le=1000000)
 ):
     """
     Demonstrate perfect 50/50 coin flip distribution.
