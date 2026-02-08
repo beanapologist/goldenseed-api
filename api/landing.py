@@ -28,7 +28,7 @@ LANDING_HTML = r"""<!DOCTYPE html>
         
         header {
             text-align: center;
-            padding: 100px 20px 80px;
+            padding: 60px 20px 40px;
             border-bottom: 1px solid #e5e5e5;
         }
         
@@ -94,7 +94,7 @@ LANDING_HTML = r"""<!DOCTYPE html>
         }
         
         main {
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
         
         section {
@@ -104,9 +104,18 @@ LANDING_HTML = r"""<!DOCTYPE html>
         h2 {
             font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
             color: #1a1a1a;
             font-weight: 700;
+        }
+        
+        .hero-demo {
+            max-width: 1000px;
+            margin: 40px auto 60px;
+            background: #f8f8f8;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 50px;
         }
         
         .demo-container {
@@ -184,6 +193,31 @@ LANDING_HTML = r"""<!DOCTYPE html>
             margin-top: 15px;
             color: #999;
             font-size: 0.9rem;
+        }
+        
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .side-panel {
+            text-align: center;
+        }
+        
+        .side-panel h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .side-panel .seed-label {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 20px;
         }
         
         .canvas-container {
@@ -392,6 +426,19 @@ LANDING_HTML = r"""<!DOCTYPE html>
             height: 16px;
             border: 1px solid #ccc;
         }
+        
+        .callout {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        
+        .callout h3 {
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
     </style>
 </head>
 <body>
@@ -401,58 +448,28 @@ LANDING_HTML = r"""<!DOCTYPE html>
             <h1>GoldenSeed API</h1>
             <p class="tagline">Deterministic Procedural Generation</p>
             <p class="subtitle">Same seed → same output. Always.</p>
-            <div class="cta-buttons">
-                <a href="https://goldenseed-api.vercel.app/docs" class="btn btn-primary">Try the API</a>
-                <a href="https://github.com/beanapologist/goldenseed-api" class="btn btn-secondary">View on GitHub</a>
-            </div>
         </header>
     </div>
     
     <main>
         <div class="container">
-            <!-- Interactive Demos Section -->
-            <section id="demos">
-                <h2>See It In Action</h2>
+            <!-- HERO: Dungeon Generator -->
+            <section id="hero">
+                <h2>See Determinism In Action</h2>
+                <p style="text-align: center; color: #666; font-size: 1.2rem; margin-bottom: 10px;">
+                    Generate a dungeon, remember the seed, come back tomorrow
+                </p>
+                <p style="text-align: center; color: #999; font-size: 1rem; margin-bottom: 40px;">
+                    Same seed = same dungeon. Forever.
+                </p>
                 
-                <!-- Demo 1: Basic Generation -->
-                <div class="demo-container">
-                    <div class="demo-title">🌱 Live API Demo</div>
+                <div class="hero-demo">
                     <div class="demo-controls">
-                        <input type="number" id="seed-input-1" class="demo-input" placeholder="Enter seed (e.g., 42)" value="42">
-                        <button onclick="generateBasic()" class="generate-btn">Generate</button>
-                    </div>
-                    <div id="demo-result-1" class="demo-result" style="display: none;"></div>
-                    <div class="demo-hint">💡 Try the same seed twice — you'll get identical output every time</div>
-                </div>
-                
-                <!-- Demo 2: Visual Fingerprint -->
-                <div class="demo-container">
-                    <div class="demo-title">🎨 Seed Fingerprint Visualizer</div>
-                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
-                        Every seed generates a unique, deterministic pattern
-                    </p>
-                    <div class="demo-controls">
-                        <input type="number" id="seed-input-2" class="demo-input" placeholder="Enter seed (e.g., 12345)" value="12345">
-                        <button onclick="generateFingerprint()" class="generate-btn">Visualize</button>
+                        <input type="number" id="hero-seed" class="demo-input" placeholder="Enter any seed" value="42">
+                        <button onclick="generateHeroDungeon()" class="generate-btn">Generate Dungeon</button>
                     </div>
                     <div class="canvas-container">
-                        <canvas id="fingerprint-canvas" width="400" height="400"></canvas>
-                    </div>
-                    <div class="demo-hint">🎨 Same seed = same visual pattern. Try: 42, 1337, 2026, today's date!</div>
-                </div>
-                
-                <!-- Demo 3: Procedural Dungeon -->
-                <div class="demo-container">
-                    <div class="demo-title">🗺️ Procedural Dungeon Generator</div>
-                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
-                        Generate infinite dungeons from a single seed
-                    </p>
-                    <div class="demo-controls">
-                        <input type="number" id="seed-input-3" class="demo-input" placeholder="Enter seed (e.g., 777)" value="777">
-                        <button onclick="generateDungeon()" class="generate-btn">Generate Map</button>
-                    </div>
-                    <div class="canvas-container">
-                        <div id="dungeon-container"></div>
+                        <div id="hero-dungeon"></div>
                     </div>
                     <div class="dungeon-legend">
                         <div class="legend-item">
@@ -476,7 +493,56 @@ LANDING_HTML = r"""<!DOCTYPE html>
                             <span>Treasure</span>
                         </div>
                     </div>
-                    <div class="demo-hint">🗺️ Same seed always generates the same dungeon layout</div>
+                    
+                    <div class="callout">
+                        <h3>💡 Try this:</h3>
+                        <p>Generate with seed <strong>42</strong>. Screenshot it. Close this page. Come back in a week. Generate with <strong>42</strong> again. <strong>Identical dungeon.</strong></p>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons" style="margin-top: 40px;">
+                    <a href="https://goldenseed-api.vercel.app/docs" class="btn btn-primary">Try the API</a>
+                    <a href="https://github.com/beanapologist/goldenseed-api" class="btn btn-secondary">View on GitHub</a>
+                </div>
+            </section>
+            
+            <!-- Side-by-Side Comparison -->
+            <section id="comparison">
+                <h2>Different Seeds = Different Outputs</h2>
+                <p style="text-align: center; color: #666; font-size: 1.1rem; margin-bottom: 40px;">
+                    Watch two seeds generate unique patterns in real-time
+                </p>
+                
+                <div class="demo-container" style="max-width: 1000px;">
+                    <div class="side-by-side">
+                        <div class="side-panel">
+                            <h4>Seed A</h4>
+                            <input type="number" id="seed-a" class="demo-input" value="42" style="text-align: center; margin-bottom: 20px;">
+                            <canvas id="fingerprint-a" width="300" height="300"></canvas>
+                        </div>
+                        <div class="side-panel">
+                            <h4>Seed B</h4>
+                            <input type="number" id="seed-b" class="demo-input" value="1337" style="text-align: center; margin-bottom: 20px;">
+                            <canvas id="fingerprint-b" width="300" height="300"></canvas>
+                        </div>
+                    </div>
+                    <button onclick="regenerateComparison()" class="generate-btn" style="display: block; margin: 30px auto 0;">Generate Both</button>
+                    <div class="demo-hint">🎨 Try your own seeds! Generate again - they'll produce the EXACT same patterns</div>
+                </div>
+            </section>
+            
+            <!-- More Demos -->
+            <section id="more-demos">
+                <h2>API in Action</h2>
+                
+                <div class="demo-container">
+                    <div class="demo-title">🌱 Live API Response</div>
+                    <div class="demo-controls">
+                        <input type="number" id="seed-input-api" class="demo-input" placeholder="Enter seed (e.g., 777)" value="777">
+                        <button onclick="generateBasic()" class="generate-btn">Generate</button>
+                    </div>
+                    <div id="demo-result-api" class="demo-result" style="display: none;"></div>
+                    <div class="demo-hint">💡 Real API call - see the raw JSON response</div>
                 </div>
             </section>
             
@@ -630,112 +696,10 @@ LANDING_HTML = r"""<!DOCTYPE html>
     </footer>
     
     <script>
-        // Demo 1: Basic API Generation
-        async function generateBasic() {
-            const seedInput = document.getElementById('seed-input-1');
-            const resultDiv = document.getElementById('demo-result-1');
-            const seed = parseInt(seedInput.value) || 0;
-            
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '<div class="loading">⏳</div> Generating from seed ' + seed + '...';
-            
-            try {
-                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer gs_test_key_123456789',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        seed: seed,
-                        chunks: 5,
-                        format: 'hex'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
-                
-                const data = await response.json();
-                
-                resultDiv.innerHTML = `
-<strong>✨ Generated from seed ${seed}</strong>
-
-${data.data.map((chunk, i) => `Chunk ${i+1}: ${chunk}`).join('\\n')}
-
-Hash: ${data.hash}
-Chunks: ${data.chunks_generated}
-
-🌱 Same seed = same output, every single time.
-                `.trim();
-            } catch (error) {
-                resultDiv.innerHTML = `❌ Error: ${error.message}\\n\\nCheck the <a href="https://goldenseed-api.vercel.app/docs" style="color: #1a1a1a; font-weight: 600;">API docs</a> for more info.`;
-            }
-        }
-        
-        // Demo 2: Visual Fingerprint
-        async function generateFingerprint() {
-            const seedInput = document.getElementById('seed-input-2');
-            const canvas = document.getElementById('fingerprint-canvas');
-            const ctx = canvas.getContext('2d');
-            const seed = parseInt(seedInput.value) || 0;
-            
-            // Clear canvas
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            try {
-                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer gs_test_key_123456789',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        seed: seed,
-                        chunks: 100,
-                        format: 'hex'
-                    })
-                });
-                
-                const data = await response.json();
-                const chunks = data.data;
-                
-                // Draw pattern from chunks
-                const gridSize = 10;
-                const cellSize = canvas.width / gridSize;
-                
-                for (let i = 0; i < Math.min(chunks.length, gridSize * gridSize); i++) {
-                    const chunk = chunks[i];
-                    const x = (i % gridSize) * cellSize;
-                    const y = Math.floor(i / gridSize) * cellSize;
-                    
-                    // Convert hex chunk to color
-                    const r = parseInt(chunk.substr(0, 2), 16);
-                    const g = parseInt(chunk.substr(2, 2), 16);
-                    const b = parseInt(chunk.substr(4, 2), 16);
-                    
-                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-                    ctx.fillRect(x, y, cellSize, cellSize);
-                    
-                    // Add subtle border
-                    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-                    ctx.strokeRect(x, y, cellSize, cellSize);
-                }
-                
-            } catch (error) {
-                ctx.fillStyle = '#333';
-                ctx.font = '16px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('Error generating pattern', canvas.width/2, canvas.height/2);
-            }
-        }
-        
-        // Demo 3: Procedural Dungeon
-        async function generateDungeon() {
-            const seedInput = document.getElementById('seed-input-3');
-            const container = document.getElementById('dungeon-container');
+        // Hero Dungeon Generator
+        async function generateHeroDungeon() {
+            const seedInput = document.getElementById('hero-seed');
+            const container = document.getElementById('hero-dungeon');
             const seed = parseInt(seedInput.value) || 0;
             
             container.innerHTML = '<div class="loading">⏳</div> Generating dungeon...';
@@ -795,11 +759,134 @@ Chunks: ${data.chunks_generated}
             }
         }
         
+        // Side-by-side fingerprint comparison
+        async function generateFingerprint(canvasId, seed) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            try {
+                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer gs_test_key_123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        seed: seed,
+                        chunks: 100,
+                        format: 'hex'
+                    })
+                });
+                
+                const data = await response.json();
+                const chunks = data.data;
+                
+                // Draw pattern from chunks
+                const gridSize = 10;
+                const cellSize = canvas.width / gridSize;
+                
+                for (let i = 0; i < Math.min(chunks.length, gridSize * gridSize); i++) {
+                    const chunk = chunks[i];
+                    const x = (i % gridSize) * cellSize;
+                    const y = Math.floor(i / gridSize) * cellSize;
+                    
+                    // Convert hex chunk to color
+                    const r = parseInt(chunk.substr(0, 2), 16);
+                    const g = parseInt(chunk.substr(2, 2), 16);
+                    const b = parseInt(chunk.substr(4, 2), 16);
+                    
+                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                    
+                    // Add subtle border
+                    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                    ctx.strokeRect(x, y, cellSize, cellSize);
+                }
+                
+            } catch (error) {
+                ctx.fillStyle = '#333';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Error', canvas.width/2, canvas.height/2);
+            }
+        }
+        
+        async function regenerateComparison() {
+            const seedA = parseInt(document.getElementById('seed-a').value) || 42;
+            const seedB = parseInt(document.getElementById('seed-b').value) || 1337;
+            
+            await Promise.all([
+                generateFingerprint('fingerprint-a', seedA),
+                generateFingerprint('fingerprint-b', seedB)
+            ]);
+        }
+        
+        // API Demo
+        async function generateBasic() {
+            const seedInput = document.getElementById('seed-input-api');
+            const resultDiv = document.getElementById('demo-result-api');
+            const seed = parseInt(seedInput.value) || 0;
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="loading">⏳</div> Generating from seed ' + seed + '...';
+            
+            try {
+                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer gs_test_key_123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        seed: seed,
+                        chunks: 5,
+                        format: 'hex'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+<strong>✨ Generated from seed ${seed}</strong>
+
+${data.data.map((chunk, i) => `Chunk ${i+1}: ${chunk}`).join('\\n')}
+
+Hash: ${data.hash}
+Chunks: ${data.chunks_generated}
+
+🌱 Same seed = same output, every single time.
+                `.trim();
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Error: ${error.message}\\n\\nCheck the <a href="https://goldenseed-api.vercel.app/docs" style="color: #1a1a1a; font-weight: 600;">API docs</a> for more info.`;
+            }
+        }
+        
         // Auto-generate on load
         window.addEventListener('load', () => {
-            generateBasic();
-            generateFingerprint();
-            generateDungeon();
+            generateHeroDungeon();
+            regenerateComparison();
+            
+            // Add Enter key handlers for seed inputs
+            document.getElementById('seed-a').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') regenerateComparison();
+            });
+            document.getElementById('seed-b').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') regenerateComparison();
+            });
+            document.getElementById('hero-seed').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') generateHeroDungeon();
+            });
+            document.getElementById('seed-input-api').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') generateBasic();
+            });
         });
     </script>
 </body>
