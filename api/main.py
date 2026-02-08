@@ -11,7 +11,11 @@ from typing import Optional, List, Literal
 import hashlib
 import os
 import time
-from pathlib import Path
+
+try:
+    from .landing import LANDING_HTML
+except ImportError:
+    from landing import LANDING_HTML
 
 # Import GoldenSeed
 try:
@@ -143,18 +147,7 @@ class BatchResponse(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 async def root():
     """Serve the landing page"""
-    landing_path = Path(__file__).parent.parent / "public" / "index.html"
-    if landing_path.exists():
-        return landing_path.read_text()
-    return """
-    <html>
-        <body>
-            <h1>🌱 GoldenSeed API</h1>
-            <p>Deterministic Procedural Generation</p>
-            <a href="/docs">View API Documentation</a>
-        </body>
-    </html>
-    """
+    return LANDING_HTML
 
 @app.get("/health")
 async def health_check():

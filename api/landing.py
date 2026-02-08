@@ -1,0 +1,807 @@
+"""Landing page HTML as a Python constant"""
+
+LANDING_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoldenSeed API - Deterministic Procedural Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 100px 20px 80px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #999;
+            margin-bottom: 40px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-block;
+            border: 2px solid #1a1a1a;
+        }
+        
+        .btn-primary {
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #333;
+            border-color: #333;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a1a1a;
+        }
+        
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+        
+        main {
+            padding: 80px 20px;
+        }
+        
+        section {
+            margin-bottom: 100px;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+        
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px;
+        }
+        
+        .demo-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #1a1a1a;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .demo-input {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .demo-input:focus {
+            outline: none;
+            border-color: #1a1a1a;
+        }
+        
+        .generate-btn {
+            padding: 15px 30px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .generate-btn:hover {
+            background: #333;
+        }
+        
+        .generate-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .demo-result {
+            background: white;
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #333;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .demo-hint {
+            text-align: center;
+            margin-top: 15px;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        canvas {
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .feature {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .feature p {
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .pricing {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .price-card {
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .price-card:hover {
+            border-color: #1a1a1a;
+            transform: translateY(-5px);
+        }
+        
+        .price-card.featured {
+            background: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+        
+        .price-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .price-period {
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+        
+        .price-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .price-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .price-card.featured .price-features li {
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        pre {
+            background: #1a1a1a;
+            color: #f5f5f5;
+            padding: 25px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid #e5e5e5;
+            background: #fafafa;
+        }
+        
+        footer a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stat-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 60px 0;
+            padding: 40px;
+            background: #f8f8f8;
+            border-radius: 8px;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .dungeon-grid {
+            display: inline-grid;
+            gap: 2px;
+            background: white;
+            padding: 2px;
+            border-radius: 8px;
+            border: 2px solid #e5e5e5;
+        }
+        
+        .dungeon-cell {
+            width: 20px;
+            height: 20px;
+            transition: all 0.1s ease;
+        }
+        
+        .dungeon-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🌱</div>
+            <h1>GoldenSeed API</h1>
+            <p class="tagline">Deterministic Procedural Generation</p>
+            <p class="subtitle">Same seed → same output. Always.</p>
+            <div class="cta-buttons">
+                <a href="https://goldenseed-api.vercel.app/docs" class="btn btn-primary">Try the API</a>
+                <a href="https://github.com/beanapologist/goldenseed-api" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </header>
+    </div>
+    
+    <main>
+        <div class="container">
+            <!-- Interactive Demos Section -->
+            <section id="demos">
+                <h2>See It In Action</h2>
+                
+                <!-- Demo 1: Basic Generation -->
+                <div class="demo-container">
+                    <div class="demo-title">🌱 Live API Demo</div>
+                    <div class="demo-controls">
+                        <input type="number" id="seed-input-1" class="demo-input" placeholder="Enter seed (e.g., 42)" value="42">
+                        <button onclick="generateBasic()" class="generate-btn">Generate</button>
+                    </div>
+                    <div id="demo-result-1" class="demo-result" style="display: none;"></div>
+                    <div class="demo-hint">💡 Try the same seed twice — you'll get identical output every time</div>
+                </div>
+                
+                <!-- Demo 2: Visual Fingerprint -->
+                <div class="demo-container">
+                    <div class="demo-title">🎨 Seed Fingerprint Visualizer</div>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        Every seed generates a unique, deterministic pattern
+                    </p>
+                    <div class="demo-controls">
+                        <input type="number" id="seed-input-2" class="demo-input" placeholder="Enter seed (e.g., 12345)" value="12345">
+                        <button onclick="generateFingerprint()" class="generate-btn">Visualize</button>
+                    </div>
+                    <div class="canvas-container">
+                        <canvas id="fingerprint-canvas" width="400" height="400"></canvas>
+                    </div>
+                    <div class="demo-hint">🎨 Same seed = same visual pattern. Try: 42, 1337, 2026, today's date!</div>
+                </div>
+                
+                <!-- Demo 3: Procedural Dungeon -->
+                <div class="demo-container">
+                    <div class="demo-title">🗺️ Procedural Dungeon Generator</div>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        Generate infinite dungeons from a single seed
+                    </p>
+                    <div class="demo-controls">
+                        <input type="number" id="seed-input-3" class="demo-input" placeholder="Enter seed (e.g., 777)" value="777">
+                        <button onclick="generateDungeon()" class="generate-btn">Generate Map</button>
+                    </div>
+                    <div class="canvas-container">
+                        <div id="dungeon-container"></div>
+                    </div>
+                    <div class="dungeon-legend">
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #333;"></div>
+                            <span>Wall</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #f5f5f5;"></div>
+                            <span>Floor</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #4CAF50;"></div>
+                            <span>Start</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #f44336;"></div>
+                            <span>Exit</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box" style="background: #FFC107;"></div>
+                            <span>Treasure</span>
+                        </div>
+                    </div>
+                    <div class="demo-hint">🗺️ Same seed always generates the same dungeon layout</div>
+                </div>
+            </section>
+            
+            <!-- Stats -->
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Deterministic</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">50/50</div>
+                    <div class="stat-label">Perfect Balance</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">$0</div>
+                    <div class="stat-label">To Start</div>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <section id="features">
+                <h2>Why GoldenSeed?</h2>
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Deterministic</h3>
+                        <p>Same seed always produces identical output. Perfect for reproducible content generation.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">✅</div>
+                        <h3>Verifiable</h3>
+                        <p>Every output includes a cryptographic hash. Prove authenticity and reproducibility.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">⚖️</div>
+                        <h3>Perfect Balance</h3>
+                        <p>50/50 coin flip distribution guaranteed. Statistical perfection out of the box.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Fast & Scalable</h3>
+                        <p>Serverless architecture. Global CDN. Scales automatically with your needs.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎮</div>
+                        <h3>Game-Ready</h3>
+                        <p>Generate infinite worlds, dungeons, items. Store entire universes as seeds.</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎨</div>
+                        <h3>NFT-Friendly</h3>
+                        <p>Create verifiable generative art. Prove your NFT matches the seed.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Use Cases -->
+            <section id="use-cases">
+                <h2>Use Cases</h2>
+                <div class="features">
+                    <div class="feature">
+                        <h3>🎮 Game Development</h3>
+                        <p>Generate infinite Minecraft-like worlds. Store entire planets as a single number. Reproduce any world from its seed.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>🎨 Generative Art</h3>
+                        <p>Create verifiable NFTs from seeds. Prove authenticity with cryptographic hashes. No "trust me" needed.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>🧪 Testing & QA</h3>
+                        <p>Reproduce bugs with exact test data. Debug flaky tests with deterministic randomness. Perfect for CI/CD.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pricing -->
+            <section id="pricing">
+                <h2>Pricing</h2>
+                <div class="pricing">
+                    <div class="price-card">
+                        <div class="price-name">Free</div>
+                        <div class="price-amount">$0</div>
+                        <div class="price-period">forever</div>
+                        <ul class="price-features">
+                            <li>10,000 chunks/month</li>
+                            <li>100 requests/minute</li>
+                            <li>Public verification</li>
+                            <li>Community support</li>
+                        </ul>
+                        <a href="https://goldenseed-api.vercel.app/docs" class="btn btn-secondary">Get Started</a>
+                    </div>
+                    
+                    <div class="price-card featured">
+                        <div class="price-name">Indie</div>
+                        <div class="price-amount">$10</div>
+                        <div class="price-period">/month</div>
+                        <ul class="price-features">
+                            <li>1M chunks/month</li>
+                            <li>1,000 requests/minute</li>
+                            <li>Batch API</li>
+                            <li>Priority support</li>
+                        </ul>
+                        <a href="mailto:admin@coinjecture.com?subject=GoldenSeed%20Indie%20Tier" class="btn btn-primary">Contact Us</a>
+                    </div>
+                    
+                    <div class="price-card">
+                        <div class="price-name">Studio</div>
+                        <div class="price-amount">$100</div>
+                        <div class="price-period">/month</div>
+                        <ul class="price-features">
+                            <li>10M chunks/month</li>
+                            <li>10,000 requests/minute</li>
+                            <li>Custom seeds</li>
+                            <li>Webhooks & SLA</li>
+                        </ul>
+                        <a href="mailto:admin@coinjecture.com?subject=GoldenSeed%20Studio%20Tier" class="btn btn-secondary">Contact Us</a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Quick Start -->
+            <section id="quick-start">
+                <h2>Quick Start</h2>
+                <pre><code>curl -X POST https://goldenseed-api.vercel.app/api/v1/generate \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "seed": 42,
+    "chunks": 100,
+    "format": "hex"
+  }'</code></pre>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <p style="margin-bottom: 20px; color: #666;">Get your free API key and full documentation:</p>
+                    <a href="https://goldenseed-api.vercel.app/docs" class="btn btn-primary">API Documentation</a>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p style="margin-bottom: 10px; color: #666;">Built with 💜 by <a href="https://github.com/beanapologist">@beanapologist</a></p>
+            <p style="margin-bottom: 30px; color: #999; font-size: 0.9rem;">Part of the <a href="https://github.com/COINjecture-Network">COINjecture Network</a></p>
+            <div style="margin-top: 20px;">
+                <a href="https://github.com/beanapologist/goldenseed-api" style="margin: 0 15px;">GitHub</a>
+                <a href="https://goldenseed-api.vercel.app/docs" style="margin: 0 15px;">API Docs</a>
+                <a href="https://twitter.com/beanapologist" style="margin: 0 15px;">Twitter</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Demo 1: Basic API Generation
+        async function generateBasic() {
+            const seedInput = document.getElementById('seed-input-1');
+            const resultDiv = document.getElementById('demo-result-1');
+            const seed = parseInt(seedInput.value) || 0;
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="loading">⏳</div> Generating from seed ' + seed + '...';
+            
+            try {
+                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer gs_test_key_123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        seed: seed,
+                        chunks: 5,
+                        format: 'hex'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+<strong>✨ Generated from seed \${seed}</strong>
+
+\${data.data.map((chunk, i) => `Chunk \${i+1}: \${chunk}`).join('\\n')}
+
+Hash: \${data.hash}
+Chunks: \${data.chunks_generated}
+
+🌱 Same seed = same output, every single time.
+                `.trim();
+            } catch (error) {
+                resultDiv.innerHTML = `❌ Error: \${error.message}\\n\\nCheck the <a href="https://goldenseed-api.vercel.app/docs" style="color: #1a1a1a; font-weight: 600;">API docs</a> for more info.`;
+            }
+        }
+        
+        // Demo 2: Visual Fingerprint
+        async function generateFingerprint() {
+            const seedInput = document.getElementById('seed-input-2');
+            const canvas = document.getElementById('fingerprint-canvas');
+            const ctx = canvas.getContext('2d');
+            const seed = parseInt(seedInput.value) || 0;
+            
+            // Clear canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            try {
+                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer gs_test_key_123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        seed: seed,
+                        chunks: 100,
+                        format: 'hex'
+                    })
+                });
+                
+                const data = await response.json();
+                const chunks = data.data;
+                
+                // Draw pattern from chunks
+                const gridSize = 10;
+                const cellSize = canvas.width / gridSize;
+                
+                for (let i = 0; i < Math.min(chunks.length, gridSize * gridSize); i++) {
+                    const chunk = chunks[i];
+                    const x = (i % gridSize) * cellSize;
+                    const y = Math.floor(i / gridSize) * cellSize;
+                    
+                    // Convert hex chunk to color
+                    const r = parseInt(chunk.substr(0, 2), 16);
+                    const g = parseInt(chunk.substr(2, 2), 16);
+                    const b = parseInt(chunk.substr(4, 2), 16);
+                    
+                    ctx.fillStyle = `rgb(\${r}, \${g}, \${b})`;
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                    
+                    // Add subtle border
+                    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                    ctx.strokeRect(x, y, cellSize, cellSize);
+                }
+                
+            } catch (error) {
+                ctx.fillStyle = '#333';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Error generating pattern', canvas.width/2, canvas.height/2);
+            }
+        }
+        
+        // Demo 3: Procedural Dungeon
+        async function generateDungeon() {
+            const seedInput = document.getElementById('seed-input-3');
+            const container = document.getElementById('dungeon-container');
+            const seed = parseInt(seedInput.value) || 0;
+            
+            container.innerHTML = '<div class="loading">⏳</div> Generating dungeon...';
+            
+            try {
+                const response = await fetch('https://goldenseed-api.vercel.app/api/v1/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer gs_test_key_123456789',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        seed: seed,
+                        chunks: 400,
+                        format: 'hex'
+                    })
+                });
+                
+                const data = await response.json();
+                const chunks = data.data;
+                
+                // Generate 20x20 dungeon grid
+                const gridSize = 20;
+                const grid = document.createElement('div');
+                grid.className = 'dungeon-grid';
+                grid.style.gridTemplateColumns = `repeat(\${gridSize}, 20px)`;
+                
+                for (let i = 0; i < gridSize * gridSize; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'dungeon-cell';
+                    
+                    // Use chunks to determine cell type
+                    const chunkIndex = i % chunks.length;
+                    const byte = parseInt(chunks[chunkIndex].substr(0, 2), 16);
+                    
+                    // Classify based on byte value
+                    if (i === 0) {
+                        cell.style.background = '#4CAF50'; // Start
+                    } else if (i === gridSize * gridSize - 1) {
+                        cell.style.background = '#f44336'; // Exit
+                    } else if (byte < 64) {
+                        cell.style.background = '#333'; // Wall
+                    } else if (byte > 240) {
+                        cell.style.background = '#FFC107'; // Treasure
+                    } else {
+                        cell.style.background = '#f5f5f5'; // Floor
+                    }
+                    
+                    grid.appendChild(cell);
+                }
+                
+                container.innerHTML = '';
+                container.appendChild(grid);
+                
+            } catch (error) {
+                container.innerHTML = '❌ Error generating dungeon';
+            }
+        }
+        
+        // Auto-generate on load
+        window.addEventListener('load', () => {
+            generateBasic();
+            generateFingerprint();
+            generateDungeon();
+        });
+    </script>
+</body>
+</html>
+"""
