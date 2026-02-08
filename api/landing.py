@@ -1,6 +1,6 @@
 """Landing page HTML as a Python constant"""
 
-LANDING_HTML = """<!DOCTYPE html>
+LANDING_HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -660,17 +660,17 @@ LANDING_HTML = """<!DOCTYPE html>
                 const data = await response.json();
                 
                 resultDiv.innerHTML = `
-<strong>✨ Generated from seed \${seed}</strong>
+<strong>✨ Generated from seed ${seed}</strong>
 
-\${data.data.map((chunk, i) => `Chunk \${i+1}: \${chunk}`).join('\\n')}
+${data.data.map((chunk, i) => `Chunk ${i+1}: ${chunk}`).join('\\n')}
 
-Hash: \${data.hash}
-Chunks: \${data.chunks_generated}
+Hash: ${data.hash}
+Chunks: ${data.chunks_generated}
 
 🌱 Same seed = same output, every single time.
                 `.trim();
             } catch (error) {
-                resultDiv.innerHTML = `❌ Error: \${error.message}\\n\\nCheck the <a href="https://goldenseed-api.vercel.app/docs" style="color: #1a1a1a; font-weight: 600;">API docs</a> for more info.`;
+                resultDiv.innerHTML = `❌ Error: ${error.message}\\n\\nCheck the <a href="https://goldenseed-api.vercel.app/docs" style="color: #1a1a1a; font-weight: 600;">API docs</a> for more info.`;
             }
         }
         
@@ -716,7 +716,7 @@ Chunks: \${data.chunks_generated}
                     const g = parseInt(chunk.substr(2, 2), 16);
                     const b = parseInt(chunk.substr(4, 2), 16);
                     
-                    ctx.fillStyle = `rgb(\${r}, \${g}, \${b})`;
+                    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
                     ctx.fillRect(x, y, cellSize, cellSize);
                     
                     // Add subtle border
@@ -761,7 +761,7 @@ Chunks: \${data.chunks_generated}
                 const gridSize = 20;
                 const grid = document.createElement('div');
                 grid.className = 'dungeon-grid';
-                grid.style.gridTemplateColumns = `repeat(\${gridSize}, 20px)`;
+                grid.style.gridTemplateColumns = `repeat(${gridSize}, 20px)`;
                 
                 for (let i = 0; i < gridSize * gridSize; i++) {
                     const cell = document.createElement('div');
