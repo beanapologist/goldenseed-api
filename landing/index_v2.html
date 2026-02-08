@@ -515,17 +515,17 @@
                     <div class="side-by-side">
                         <div class="side-panel">
                             <h4>Seed A</h4>
-                            <div class="seed-label">42</div>
+                            <input type="number" id="seed-a" class="demo-input" value="42" style="text-align: center; margin-bottom: 20px;">
                             <canvas id="fingerprint-a" width="300" height="300"></canvas>
                         </div>
                         <div class="side-panel">
                             <h4>Seed B</h4>
-                            <div class="seed-label">1337</div>
+                            <input type="number" id="seed-b" class="demo-input" value="1337" style="text-align: center; margin-bottom: 20px;">
                             <canvas id="fingerprint-b" width="300" height="300"></canvas>
                         </div>
                     </div>
-                    <button onclick="regenerateComparison()" class="generate-btn" style="display: block; margin: 30px auto 0;">Regenerate Both</button>
-                    <div class="demo-hint">🎨 Generate again - they'll produce the EXACT same patterns</div>
+                    <button onclick="regenerateComparison()" class="generate-btn" style="display: block; margin: 30px auto 0;">Generate Both</button>
+                    <div class="demo-hint">🎨 Try your own seeds! Generate again - they'll produce the EXACT same patterns</div>
                 </div>
             </section>
             
@@ -814,9 +814,12 @@
         }
         
         async function regenerateComparison() {
+            const seedA = parseInt(document.getElementById('seed-a').value) || 42;
+            const seedB = parseInt(document.getElementById('seed-b').value) || 1337;
+            
             await Promise.all([
-                generateFingerprint('fingerprint-a', 42),
-                generateFingerprint('fingerprint-b', 1337)
+                generateFingerprint('fingerprint-a', seedA),
+                generateFingerprint('fingerprint-b', seedB)
             ]);
         }
         
@@ -868,6 +871,20 @@ Chunks: ${data.chunks_generated}
         window.addEventListener('load', () => {
             generateHeroDungeon();
             regenerateComparison();
+            
+            // Add Enter key handlers for seed inputs
+            document.getElementById('seed-a').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') regenerateComparison();
+            });
+            document.getElementById('seed-b').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') regenerateComparison();
+            });
+            document.getElementById('hero-seed').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') generateHeroDungeon();
+            });
+            document.getElementById('seed-input-api').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') generateBasic();
+            });
         });
     </script>
 </body>
