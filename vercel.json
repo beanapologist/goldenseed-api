@@ -8,16 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/(.*)",
       "dest": "api/main.py"
-    },
-    {
-      "src": "/(docs|openapi.json|redoc)(.*)",
-      "dest": "api/main.py"
-    },
-    {
-      "src": "/",
-      "dest": "/public/index.html"
     }
   ]
 }

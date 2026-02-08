@@ -5,11 +5,13 @@ MVP FastAPI implementation
 
 from fastapi import FastAPI, HTTPException, Header, Depends, Request, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List, Literal
 import hashlib
 import os
 import time
+from pathlib import Path
 
 # Import GoldenSeed
 try:
@@ -321,6 +323,22 @@ async def health_check():
         "mode": "production" if DATABASE_AVAILABLE else "demo",
         "version": "1.0.0"
     }
+
+@app.get("/", response_class=HTMLResponse)
+async def landing_page():
+    """Serve the landing page"""
+    landing_path = Path(__file__).parent.parent / "public" / "index.html"
+    if landing_path.exists():
+        return landing_path.read_text()
+    return """
+    <html>
+        <body>
+            <h1>🌱 GoldenSeed API</h1>
+            <p>Deterministic Procedural Generation</p>
+            <a href="/docs">View API Documentation</a>
+        </body>
+    </html>
+    """
 
 if __name__ == "__main__":
     import uvicorn
