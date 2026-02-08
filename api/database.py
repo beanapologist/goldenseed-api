@@ -39,18 +39,35 @@ async def verify_api_key(key: str) -> Optional[Dict[str, Any]]:
     
     try:
         # Get API key record
-        result = supabase.table("api_keys").select(
-            "id, user_id, active, users(id, email), subscriptions(tier, chunks_limit, rate_limit, active)"
+        key_result = supabase.table("api_keys").select(
+            "id, user_id, active"
         ).eq("key_hash", key_hash).eq("active", True).execute()
         
-        if not result.data or len(result.data) == 0:
+        if not key_result.data or len(key_result.data) == 0:
             return None
         
-        key_record = result.data[0]
+        key_record = key_result.data[0]
+        user_id = key_record["user_id"]
         
-        # Check if subscription is active
-        if not key_record.get("subscriptions") or not key_record["subscriptions"]["active"]:
+        # Get user info
+        user_result = supabase.table("users").select(
+            "id, email"
+        ).eq("id", user_id).execute()
+        
+        if not user_result.data:
             return None
+        
+        user = user_result.data[0]
+        
+        # Get subscription info
+        sub_result = supabase.table("subscriptions").select(
+            "tier, chunks_limit, rate_limit, active"
+        ).eq("user_id", user_id).eq("active", True).execute()
+        
+        if not sub_result.data or len(sub_result.data) == 0:
+            return None
+        
+        subscription = sub_result.data[0]
         
         # Update last_used_at
         supabase.table("api_keys").update({
@@ -58,12 +75,12 @@ async def verify_api_key(key: str) -> Optional[Dict[str, Any]]:
         }).eq("id", key_record["id"]).execute()
         
         return {
-            "user_id": key_record["user_id"],
+            "user_id": user_id,
             "api_key_id": key_record["id"],
-            "email": key_record["users"]["email"],
-            "tier": key_record["subscriptions"]["tier"],
-            "chunks_limit": key_record["subscriptions"]["chunks_limit"],
-            "rate_limit": key_record["subscriptions"]["rate_limit"]
+            "email": user["email"],
+            "tier": subscription["tier"],
+            "chunks_limit": subscription["chunks_limit"],
+            "rate_limit": subscription["rate_limit"]
         }
     
     except Exception as e:
