@@ -344,9 +344,11 @@ async def demo_chunk(
         combined_seed = f"{seed}-{x}-{y}"
         seed_hash = int(hashlib.sha256(combined_seed.encode()).hexdigest()[:8], 16)
         
-        # Create generator and skip to position
+        # Create generator and skip a SMALL number of bytes (fast!)
+        # Use modulo to keep skip count reasonable (max 10000 iterations = ~10ms)
         gen = UniversalQKD()
-        for _ in range(seed_hash % 1000000):  # Deterministic skip
+        skip_count = seed_hash % 10000  # Down from 1000000 - prevents timeout!
+        for _ in range(skip_count):
             next(gen)
         
         # Generate 16x16 chunk
