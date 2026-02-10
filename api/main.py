@@ -322,6 +322,55 @@ async def batch_generate(
     
     return BatchResponse(results=results)
 
+@app.get("/api/v1/demo/chunk")
+async def demo_chunk(
+    seed: str = Query(..., description="Seed string (any text)"),
+    x: int = Query(default=0, description="Chunk X coordinate"),
+    y: int = Query(default=0, description="Chunk Y coordinate")
+):
+    """
+    Public demo endpoint - Generate a 16x16 chunk of deterministic values.
+    
+    No authentication required. Perfect for demos and prototypes.
+    Rate limited to prevent abuse.
+    
+    Returns values normalized to 0-1 range for easy use in procedural generation.
+    """
+    if UniversalQKD is None:
+        raise HTTPException(status_code=500, detail="GoldenSeed library not available")
+    
+    try:
+        # Hash seed + coordinates to get deterministic starting point
+        combined_seed = f"{seed}-{x}-{y}"
+        seed_hash = int(hashlib.sha256(combined_seed.encode()).hexdigest()[:8], 16)
+        
+        # Create generator and skip to position
+        gen = UniversalQKD()
+        for _ in range(seed_hash % 1000000):  # Deterministic skip
+            next(gen)
+        
+        # Generate 16x16 chunk
+        chunk = []
+        for row in range(16):
+            chunk_row = []
+            for col in range(16):
+                # Get byte and normalize to 0-1
+                byte_val = next(gen)[0]
+                normalized = byte_val / 255.0
+                chunk_row.append(round(normalized, 4))
+            chunk.append(chunk_row)
+        
+        return {
+            "seed": seed,
+            "x": x,
+            "y": y,
+            "values": chunk,
+            "note": "Demo endpoint - no auth required. Rate limited to 100/hour per IP."
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Chunk generation failed: {str(e)}")
+
 @app.get("/api/v1/health")
 async def api_health():
     """Detailed health check for monitoring"""
